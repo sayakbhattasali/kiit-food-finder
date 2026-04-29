@@ -1,0 +1,4 @@
+com.kiit.foodfinder.test.app-androidTest-0 C:\Users\KIIT0001\Desktop\Mobile App Project\KIITFoodFinder\app\build\generated\res\resValues\androidTest\debug
+com.kiit.foodfinder.test.app-mergeDebugAndroidTestResources-1 C:\Users\KIIT0001\Desktop\Mobile App Project\KIITFoodFinder\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\merged.dir
+com.kiit.foodfinder.test.app-mergeDebugAndroidTestResources-2 C:\Users\KIIT0001\Desktop\Mobile App Project\KIITFoodFinder\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\stripped.dir
+com.kiit.foodfinder.test.app-debugAndroidTest-3 C:\Users\KIIT0001\Desktop\Mobile App Project\KIITFoodFinder\app\build\intermediates\merged_res\debugAndroidTest\mergeDebugAndroidTestResources

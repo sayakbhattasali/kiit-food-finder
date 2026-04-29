@@ -1,0 +1,162 @@
+[
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/drawable/ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/mipmap-hdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/drawable_jugaadjn.jpg.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/drawable/jugaadjn.jpg"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/mipmap-xhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/drawable_foodcourt7.jpg.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/drawable/foodcourt7.jpg"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/mipmap-xxhdpi_ic_launcher_foreground.webp.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/mipmap-xxhdpi/ic_launcher_foreground.webp"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/drawable_wowmomo.jpg.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/drawable/wowmomo.jpg"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/drawable_biriyanibox.jpg.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/drawable/biriyanibox.jpg"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/drawable_zingiber.jpg.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/drawable/zingiber.jpg"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/drawable_logo.png.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/drawable/logo.png"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/drawable_bankerroll.jpg.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/drawable/bankerroll.jpg"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/drawable_dominos.jpg.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/drawable/dominos.jpg"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/mipmap-xhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/mipmap-xhdpi_ic_launcher_foreground.webp.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/mipmap-xhdpi/ic_launcher_foreground.webp"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/drawable_khatitime.jpg.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/drawable/khatitime.jpg"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/drawable_mcdonalds.jpg.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/drawable/mcdonalds.jpg"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/drawable_patiala.jpg.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/drawable/patiala.jpg"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/drawable_delhichaat.jpg.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/drawable/delhichaat.jpg"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/mipmap-mdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/mipmap-hdpi_ic_launcher_foreground.webp.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/mipmap-hdpi/ic_launcher_foreground.webp"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/drawable_chennapatnam.jpg.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/drawable/chennapatnam.jpg"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/drawable_belgianwaffle.jpg.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/drawable/belgianwaffle.jpg"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/mipmap-xxhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/mipmap-xxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/mipmap-hdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/drawable_rollicious.jpg.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/drawable/rollicious.jpg"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/mipmap-xxxhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/mipmap-mdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/drawable_prabhuji.jpg.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/drawable/prabhuji.jpg"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/drawable_ic_launcher_background.xml.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/drawable/ic_launcher_background.xml"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/drawable_pahari_momo.jpg.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/drawable/pahari_momo.jpg"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/drawable_north99.jpg.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/drawable/north99.jpg"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/mipmap-xxxhdpi_ic_launcher_foreground.webp.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/mipmap-xxxhdpi/ic_launcher_foreground.webp"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/mipmap-anydpi-v26/ic_launcher_round.xml"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/mipmap-mdpi_ic_launcher_foreground.webp.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/mipmap-mdpi/ic_launcher_foreground.webp"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/drawable_biggies.jpg.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/drawable/biggies.jpg"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/drawable_khabarkolkata.jpg.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/drawable/khabarkolkata.jpg"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/drawable_kfc.jpg.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/drawable/kfc.jpg"
+    },
+    {
+        "merged": "com.kiit.foodfinder.app-debug-51:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.kiit.foodfinder.app-main-53:/mipmap-xxxhdpi/ic_launcher_round.webp"
+    }
+]

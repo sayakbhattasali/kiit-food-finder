@@ -1,0 +1,7 @@
+// Top-level build.gradle (Project: KIITFoodFinder)
+plugins {
+    id 'com.android.application' version '8.5.0' apply false
+    id 'org.jetbrains.kotlin.android' version '1.9.24' apply false
+    // KSP must match your Kotlin version exactly: kotlin-1.9.24 → ksp-1.9.24-1.0.20
+    id 'com.google.devtools.ksp' version '1.9.24-1.0.20' apply false
+}
