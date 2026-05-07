@@ -83,24 +83,41 @@ Save your preferred restaurants for quick access.
 
 ## 🏠 Home Screen
 
-![Home Screen](./screenshots/home.jpg)
+<p align="center">
+  <img src="./screenshots/home.jpg" width="260"/>
+</p>
+
+---
 
 ## 🍽️ Nearby Food Discovery
 
-![Nearby Food](./screenshots/results.jpg)
+<p align="center">
+  <img src="./screenshots/results.jpg" width="260"/>
+</p>
+
+---
 
 ## 📍 Store Details
 
-![Store Details](./screenshots/details.jpg)
+<p align="center">
+  <img src="./screenshots/details.jpg" width="260"/>
+</p>
+
+---
 
 ## ❤️ Favorites
 
-![Favorites](./screenshots/favorites.jpg)
+<p align="center">
+  <img src="./screenshots/favorites.jpg" width="260"/>
+</p>
+
+---
 
 ## 🔍 Smart Search
 
-![Search](./screenshots/search.jpg)
-
+<p align="center">
+  <img src="./screenshots/search.jpg" width="260"/>
+</p
 ---
 
 # 🛠️ Tech Stack
