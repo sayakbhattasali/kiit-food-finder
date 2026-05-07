@@ -1,102 +1,158 @@
 # 🍽️ KIIT Food Finder
 
-> Smart Android app built for KIIT students to discover nearby food spots based on hostel location, preferences, and convenience.
-
-An elegant **Jetpack Compose + Kotlin** mobile application that helps users explore restaurants around KIIT University with hostel-based distance logic, favorites, filters, and smooth navigation.
-
----
-
-## 📱 Overview
-
-KIIT Food Finder solves a real student problem:
-
-**“What should I eat nearby right now?”**
-
-Instead of manually checking maps or food apps, users can select their hostel and instantly browse food places ranked by relevance and proximity.
+> A cinematic Android food discovery experience built for KIIT students.
+> Find nearby restaurants, cafés, desserts, late-night food spots, and student favorites around campus with a polished premium UI.
 
 ---
 
-## ✨ Key Features
+## 📲 Download APK
 
-### 🏨 Hostel-Based Discovery
-Select your KIIT hostel and get restaurants arranged by relative distance.
+[⬇ Download KIIT Food Finder v2.0](https://github.com/sayakbhattasali/kiit-food-finder/releases/latest)
 
-### 🍔 Smart Restaurant Browsing
-Browse curated food spots near KIIT with ratings, categories, pricing, and availability.
+---
+
+# ✨ About The Project
+
+KIIT Food Finder is a modern Android application designed to help KIIT students quickly discover nearby food spots based on their hostel location.
+
+Built with a dark cinematic aesthetic, the app focuses on:
+
+* smooth user experience
+* intelligent food discovery
+* premium UI design
+* realistic distance & budget estimation
+* fast hostel-based recommendations
+
+This project evolved from a simple food finder into a polished student-focused experience inspired by the atmosphere of campus life.
+
+---
+
+# 🚀 Features
+
+### 🏠 Hostel-Based Discovery
+
+* Supports 35+ KIIT hostels
+* Personalized nearby food recommendations
+* Smart distance calculations
+
+### 🍔 Rich Restaurant Ecosystem
+
+* Fast food chains
+* Cafés
+* Dessert spots
+* Budget food joints
+* Student favorites
+* Late-night food places
+
+### 🎯 Smart Filtering
+
+* Nearest
+* Best Rated
+* Cheapest
+* Open Now
+* Late Night
+
+### 🏆 Hero Recommendation System
+
+Dynamic “Best Pick” highlighting for intelligent discovery.
+
+### 💰 Realistic Budget Sorting
+
+Uses actual estimated pricing instead of generic categories.
+
+### 📍 Walking Time Estimation
+
+Distance + walking time support for practical navigation.
 
 ### ❤️ Favorites System
-Save favorite restaurants for quick future access.
 
-### 🎯 Advanced Filters
-Sort restaurants using:
+Save your preferred restaurants for quick access.
 
-- 📍 Nearest  
-- ⭐ Best Rated  
-- 🌙 Late Night Eats  
-- 🟢 Open Now  
-- 💸 Cheapest
+### 🎨 Cinematic UI Experience
 
-### 🔍 Search Experience
-Instant search across restaurants and food places.
-
-### 🔄 Smooth UX Navigation
-Custom overlay detail screen preserves scroll position while browsing.
-
-### 🎨 Premium UI
-Modern dark theme with polished mobile-first visuals.
+* Dark premium aesthetic
+* Glassmorphism-inspired cards
+* Smooth animations
+* Premium surface hierarchy
+* Floating navigation design
+* Dynamic loading transitions
 
 ---
 
-## 🛠️ Built With
+# 📸 Screenshots
 
-- **Kotlin**
-- **Jetpack Compose**
-- **Material 3**
-- **MVVM Architecture**
-- **Room Database** (favorites / preferences)
-- **Android Studio**
+## 🏠 Home Screen
+
+![Home Screen](./screenshots/home.jpg)
+
+## 🍽️ Nearby Food Discovery
+
+![Nearby Food](./screenshots/results.jpg)
+
+## 📍 Store Details
+
+![Store Details](./screenshots/details.jpg)
+
+## ❤️ Favorites
+
+![Favorites](./screenshots/favorites.jpg)
+
+## 🔍 Smart Search
+
+![Search](./screenshots/search.jpg)
 
 ---
 
-## 📂 Project Structure
+# 🛠️ Tech Stack
+
+* Kotlin
+* Jetpack Compose
+* Android Studio
+* Material 3
+* Google Maps Intents
+* State Management
+* Modern Android UI Architecture
+
+---
+
+# 🎨 Design Philosophy
+
+Instead of building a generic utility app, KIIT Food Finder was designed to feel immersive and cinematic — something that visually reflects the atmosphere of late-night food runs, café hopping, and campus life around KIIT.
+
+The app focuses heavily on:
+
+* motion
+* visual depth
+* clean typography
+* premium dark aesthetics
+* emotional UI presentation
+
+---
+
+# 📦 Release
+
+Current Version:
 
 ```text
-app/
- ├── ui/
- ├── screens/
- ├── data/
- ├── viewmodel/
- ├── theme/
- └── MainActivity.kt
-````
-
----
-
-## 🚀 Why This Project Matters
-
-This project demonstrates practical Android development skills:
-
-* Real-world problem solving
-* Jetpack Compose UI development
-* State management
-* Local database integration
-* Navigation architecture
-* UX optimization
-* Clean app structuring
-
----
-
-## 👨‍💻 Developer
-
-**Sayak Bhattasali**
-
-GitHub: [https://github.com/sayakbhattasali](https://github.com/sayakbhattasali)
-
----
-
-## ⭐ If you like this project
-
-Give it a star and support the journey.
-
+v2.0
 ```
-```
+
+Major improvements in v2.0:
+
+* premium UI overhaul
+* expanded restaurant system
+* improved filtering
+* hostel expansion
+* hero recommendation cards
+* better visual hierarchy
+* smarter sorting system
+* enhanced animations
+* refined navigation experience
+
+---
+
+# ❤️ Built For KIIT Students
+
+A small project inspired by campus life, food culture, and the little places students slowly become attached to.
+
+---
