@@ -22,6 +22,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -35,6 +37,7 @@ fun HomeScreen(
     onFindFood: (Hostel?, String) -> Unit
 ) {
     val responsive = rememberResponsiveInfo()
+    val haptic = LocalHapticFeedback.current
     var selectedHostelId by rememberSaveable {
         mutableStateOf(savedHostelId)
     }
@@ -180,7 +183,7 @@ fun HomeScreen(
                             focusedContainerColor = Surface800.copy(alpha = 0.9f),
                             unfocusedContainerColor = Surface800.copy(alpha = 0.7f),
                             focusedBorderColor = BrandPrimary,
-                            unfocusedBorderColor = Surface600,
+                            unfocusedBorderColor = Color.White.copy(alpha = 0.12f),
                             cursorColor = BrandPrimary,
                             focusedTextColor = TextPrimary,
                             unfocusedTextColor = TextPrimary
@@ -209,7 +212,7 @@ fun HomeScreen(
                                 modifier = Modifier.padding(top = 8.dp).fillMaxWidth(),
                                 shape = RoundedCornerShape(16.dp),
                                 colors = CardDefaults.cardColors(containerColor = Surface800),
-                                border = BorderStroke(1.dp, Surface600)
+                                border = BorderStroke(1.dp, Color.White.copy(alpha = 0.14f))
                             ) {
                                 Column(modifier = Modifier.padding(8.dp)) {
                                     suggestions.forEach { store ->
@@ -251,7 +254,7 @@ fun HomeScreen(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(20.dp),
                     colors = CardDefaults.cardColors(containerColor = Surface800),
-                    border = BorderStroke(1.dp, Surface600)
+                    border = BorderStroke(1.dp, Color.White.copy(alpha = 0.14f))
                 ) {
                     Column(modifier = Modifier.padding(responsive.cardPadding)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -287,7 +290,7 @@ fun HomeScreen(
                                     .background(Surface700)
                                     .border(
                                         width = 1.dp,
-                                        color = if (dropdownExpanded) BrandPrimary else Surface600,
+                                        color = if (dropdownExpanded) BrandPrimary else Color.White.copy(alpha = 0.12f),
                                         shape = RoundedCornerShape(12.dp)
                                     )
                                     .padding(horizontal = 16.dp, vertical = 14.dp)
@@ -324,7 +327,7 @@ fun HomeScreen(
                                         .exposedDropdownSize()
                                         .heightIn(max = 260.dp)
                                         .background(Surface700)
-                                        .border(1.dp, Surface600, RoundedCornerShape(16.dp))
+                                        .border(1.dp, Color.White.copy(alpha = 0.12f), RoundedCornerShape(16.dp))
                                 ) {
                                     ALL_HOSTELS.forEach { hostel ->
                                         DropdownMenuItem(
@@ -356,7 +359,10 @@ fun HomeScreen(
                         Spacer(modifier = Modifier.height(18.dp))
 
                         Button(
-                            onClick = { selectedHostel?.let { onFindFood(it, searchQuery) } },
+                            onClick = {
+                                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                                selectedHostel?.let { onFindFood(it, searchQuery) }
+                            },
                             enabled = selectedHostel != null,
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -404,15 +410,19 @@ fun HomeScreen(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    QuickStat(emoji = "🏪", number = "20+", label = "Food Spots", responsive = responsive)
+                    QuickStat(emoji = "🏪", number = "30+", label = "Food Spots", responsive = responsive)
                     StatDivider()
-                    QuickStat(emoji = "🏠", number = "7", label = "Hostels", responsive = responsive)
+                    QuickStat(emoji = "🏠", number = "35", label = "Hostels", responsive = responsive)
                     StatDivider()
-                    QuickStat(emoji = "⚡", number = "<1km", label = "Avg. Distance", responsive = responsive)
+                    QuickStat(emoji = "🚶", number = "<1.5 km", label = "Avg. distance", responsive = responsive)
                 }
             }
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(
+                modifier = Modifier
+                    .navigationBarsPadding()
+                    .height(84.dp)
+            )
         }
     }
 }
@@ -443,7 +453,7 @@ private fun StatDivider() {
         modifier = Modifier
             .height(36.dp)
             .width(1.dp)
-            .background(Surface600)
+            .background(Color.White.copy(alpha = 0.1f))
     )
 }
 
@@ -453,7 +463,7 @@ private fun CategoryPill(label: String, responsive: ResponsiveInfo) {
         modifier = Modifier
             .clip(RoundedCornerShape(50.dp))
             .background(Surface700)
-            .border(1.dp, Surface600, RoundedCornerShape(50.dp))
+            .border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(50.dp))
             .padding(horizontal = 12.dp, vertical = 7.dp)
     ) {
         Text(

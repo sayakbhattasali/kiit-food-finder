@@ -49,6 +49,7 @@ data class FoodStore(
     val distanceMeters: Int,
     val rating: Float,
     val priceRange: PriceRange,
+    val costForOne: Int,
     val category: FoodCategory,
     val reviewCount: Int,
     val speciality: String,
@@ -77,6 +78,13 @@ enum class FilterOption(val label: String) {
 fun FoodStore.formattedDistance(): String =
     if (distanceMeters < 1000) "~${distanceMeters} m"
     else String.format("~%.1f km", distanceMeters / 1000.0)
+
+fun FoodStore.formattedDistanceAndTime(): String {
+    val distStr = formattedDistance()
+    // 4.5 km/h = 75 meters/minute
+    val walkingMinutes = (distanceMeters / 75).coerceAtLeast(1)
+    return "$distStr • $walkingMinutes min"
+}
 
 fun isStoreOpen(store: FoodStore): Boolean {
     val cal = java.util.Calendar.getInstance()

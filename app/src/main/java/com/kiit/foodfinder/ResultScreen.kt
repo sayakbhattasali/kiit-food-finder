@@ -5,6 +5,8 @@ import androidx.core.net.toUri
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -23,12 +25,16 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -53,6 +59,7 @@ fun ResultScreen(
 ) {
     val responsive    = rememberResponsiveInfo()
     val vm            = LocalFavoritesViewModel.current
+    val haptic        = LocalHapticFeedback.current
     LaunchedEffect(Unit) {
         Log.d("SCROLLTEST", "RESULT_SCREEN_CREATED")
     }
@@ -136,6 +143,13 @@ fun ResultScreen(
         }
     }
 
+    // Automatically scroll to top when filters change
+    LaunchedEffect(searchQuery, selectedFilter) {
+        if (isRestored) {
+            listState.animateScrollToItem(0)
+        }
+    }
+
     val rawStores = remember(hostel) {
         if (hostel != null) getStoresForHostel(hostel.id) else ALL_STORES
     }
@@ -184,7 +198,7 @@ fun ResultScreen(
                         .size(if (responsive.isSmallPhone) 38.dp else 42.dp)
                         .clip(CircleShape)
                         .background(Surface800)
-                        .border(1.dp, Surface600, CircleShape)
+                        .border(1.dp, Color.White.copy(alpha = 0.12f), CircleShape)
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -204,9 +218,19 @@ fun ResultScreen(
                         fontSize = responsive.h2,
                         letterSpacing = (-0.5).sp
                     )
+                    val subtitle = if (hostel != null) {
+                        when (selectedFilter) {
+                            FilterOption.NEAREST -> "Near ${hostel.displayName} • $openCount open"
+                            FilterOption.BEST_RATED -> "Top rated near ${hostel.displayName}"
+                            FilterOption.CHEAPEST -> "Budget eats near ${hostel.displayName}"
+                            FilterOption.OPEN_NOW -> "Open now near ${hostel.displayName}"
+                            FilterOption.LATE_NIGHT -> "Late night spots near ${hostel.displayName}"
+                        }
+                    } else {
+                        "Found ${displayedStores.size} matches"
+                    }
                     Text(
-                        text = if (hostel != null) "${hostel.displayName} • $openCount open"
-                        else "Found ${displayedStores.size} matches",
+                        text = subtitle,
                         color = TextSecondary,
                         fontSize = responsive.label
                     )
@@ -243,7 +267,10 @@ fun ResultScreen(
             ) {
                 items(availableFilters.size) { index ->
                     val filter = availableFilters[index]
-                    PremiumFilterChip(filter, selectedFilter == filter, responsive) { selectedFilter = filter }
+                    PremiumFilterChip(filter, selectedFilter == filter, responsive) {
+                        haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                        selectedFilter = filter
+                    }
                 }
             }
 
@@ -270,7 +297,10 @@ fun ResultScreen(
                             hostel      = hostel,
                             responsive  = responsive,
                             isFavorite  = favoriteIds.contains(store.id),
-                            onCardClick = { onStoreClick(store) },
+                            onCardClick = {
+                                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                                onStoreClick(store)
+                            },
                             onNavigate  = {
                                 val mapsUri = it.mapsLink.toUri()
                                 val intent  = Intent(Intent.ACTION_VIEW, mapsUri)
@@ -278,7 +308,12 @@ fun ResultScreen(
                                 try { context.startActivity(intent) }
                                 catch (_: Exception) { context.startActivity(Intent(Intent.ACTION_VIEW, mapsUri)) }
                             },
-                            onFavoriteToggle = { vm.toggleFavorite(store.id) }
+                            onFavoriteToggle = {
+                                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                                vm.toggleFavorite(store.id)
+                            },
+                            isResultScreen = (hostel != null && searchQuery.isEmpty()),
+                            currentFilter = selectedFilter
                         )
                     }
                     item {
@@ -312,7 +347,7 @@ private fun PremiumFilterChip(
         onClick = onClick,
         shape = RoundedCornerShape(50.dp),
         color = if (isSelected) Color.Transparent else Surface800,
-        border = BorderStroke(1.dp, if (isSelected) Color.Transparent else Surface600),
+        border = BorderStroke(1.dp, if (isSelected) Color.Transparent else Color.White.copy(alpha = 0.10f)),
         modifier = Modifier.then(
             if (isSelected) Modifier.background(BrandGradient, RoundedCornerShape(50.dp)) else Modifier
         )
@@ -342,8 +377,29 @@ fun EnhancedStoreCard(
     isFavorite: Boolean,
     onCardClick: () -> Unit,
     onNavigate: (FoodStore) -> Unit,
-    onFavoriteToggle: (() -> Unit)? = null // Added optional toggle
+    onFavoriteToggle: (() -> Unit)? = null, // Added optional toggle
+    isResultScreen: Boolean = false,
+    currentFilter: FilterOption? = null
 ) {
+    val shouldShowHero =
+        isResultScreen &&
+                rank == 1 &&
+                (
+                        currentFilter == FilterOption.NEAREST ||
+                                currentFilter == FilterOption.BEST_RATED ||
+                                currentFilter == FilterOption.CHEAPEST
+                        )
+
+    val isHero = shouldShowHero
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+    val baseScale = if (isHero) 1.02f else 1f
+    val scale by animateFloatAsState(
+        targetValue = if (isPressed) baseScale * 0.97f else baseScale,
+        animationSpec = spring(dampingRatio = Spring.DampingRatioLowBouncy, stiffness = Spring.StiffnessMediumLow),
+        label = "scale"
+    )
+
     val delay = (rank * 50).coerceAtMost(300)
     var visible by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) { visible = true }
@@ -356,16 +412,56 @@ fun EnhancedStoreCard(
             onClick = onCardClick,
             shape = RoundedCornerShape(24.dp),
             colors = CardDefaults.cardColors(containerColor = Surface800),
-            border = BorderStroke(1.dp, Surface600),
-            modifier = Modifier.fillMaxWidth()
+            border = BorderStroke(
+                width = if (isHero) 1.5.dp else 1.dp,
+                color = if (isHero) BrandPrimary.copy(alpha = 0.5f) else Color.White.copy(alpha = 0.14f)
+            ),
+            interactionSource = interactionSource,
+            modifier = Modifier
+                .fillMaxWidth()
+                .graphicsLayer {
+                    scaleX = scale
+                    scaleY = scale
+                }
+                .shadow(
+                    elevation = if (isHero) (if (isPressed) 8.dp else 20.dp) else (if (isPressed) 4.dp else 12.dp),
+                    shape = RoundedCornerShape(24.dp),
+                    spotColor = if (isHero) BrandPrimary.copy(alpha = 0.6f) else Color.Black.copy(alpha = 0.4f),
+                    ambientColor = if (isHero) BrandPrimary.copy(alpha = 0.2f) else Color.Black.copy(alpha = 0.1f)
+                )
         ) {
             Column {
-                Box(modifier = Modifier.fillMaxWidth().height(if (responsive.isSmallPhone) 140.dp else 160.dp)) {
+                val imageHeight = if (isHero) {
+                    if (responsive.isSmallPhone) 160.dp else 185.dp
+                } else {
+                    if (responsive.isSmallPhone) 140.dp else 160.dp
+                }
+
+                Box(modifier = Modifier.fillMaxWidth().height(imageHeight)) {
                     StoreThumbnail(store)
 
                     Box(modifier = Modifier.fillMaxSize().background(
-                        Brush.verticalGradient(listOf(Color.Transparent, Surface800.copy(alpha = 0.8f)), startY = 200f)
+                        Brush.verticalGradient(
+                            colors = listOf(Color.Transparent, Surface800.copy(alpha = 0.85f)),
+                            startY = 100f
+                        )
                     ))
+
+                    if (isHero) {
+                        Surface(
+                            shape = RoundedCornerShape(bottomEnd = 16.dp),
+                            color = BrandPrimary.copy(alpha = 0.9f),
+                            modifier = Modifier.align(Alignment.TopStart)
+                        ) {
+                            Text(
+                                text = "🏆 Best Pick",
+                                color = Color.Black,
+                                fontWeight = FontWeight.ExtraBold,
+                                fontSize = 11.sp,
+                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)
+                            )
+                        }
+                    }
 
                     // Rank, status, and favourite indicator all in one overlay row
                     Row(
@@ -373,14 +469,18 @@ fun EnhancedStoreCard(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.Top
                     ) {
-                        Surface(
-                            shape = CircleShape,
-                            color = Surface900.copy(alpha = 0.85f),
-                            modifier = Modifier.size(32.dp).border(1.2.dp, Color.White.copy(alpha = 0.3f), CircleShape)
-                        ) {
-                            Box(contentAlignment = Alignment.Center) {
-                                Text("#$rank", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                        if (!isHero) {
+                            Surface(
+                                shape = CircleShape,
+                                color = Surface900.copy(alpha = 0.85f),
+                                modifier = Modifier.size(32.dp).border(1.2.dp, Color.White.copy(alpha = 0.2f), CircleShape)
+                            ) {
+                                Box(contentAlignment = Alignment.Center) {
+                                    Text("#$rank", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 11.sp)
+                                }
                             }
+                        } else {
+                            Spacer(modifier = Modifier.weight(1f))
                         }
 
                         Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -390,8 +490,7 @@ fun EnhancedStoreCard(
                                 color = Surface900.copy(alpha = 0.85f),
                                 onClick = { onFavoriteToggle?.invoke() },
                                 enabled = onFavoriteToggle != null || isFavorite,
-                                modifier = Modifier
-                                    .size(32.dp)
+                                modifier = Modifier.size(32.dp)
                             ) {
                                 Box(contentAlignment = Alignment.Center) {
                                     Icon(
@@ -417,14 +516,14 @@ fun EnhancedStoreCard(
                             Text(
                                 text = store.name,
                                 color = TextPrimary,
-                                fontWeight = FontWeight.ExtraBold,
+                                fontWeight = FontWeight.SemiBold,
                                 fontSize = responsive.h3,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis
                             )
                             Text(
                                 text = "${store.category.emoji} ${store.category.label} • ${store.speciality}",
-                                color = TextSecondary,
+                                color = TextSecondary.copy(alpha = 0.7f),
                                 fontSize = responsive.label,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis
@@ -452,7 +551,7 @@ fun EnhancedStoreCard(
                     }
 
                     Spacer(modifier = Modifier.height(14.dp))
-                    HorizontalDivider(color = Surface600, thickness = 0.5.dp)
+                    HorizontalDivider(color = Surface600.copy(alpha = 0.5f), thickness = 0.5.dp)
                     Spacer(modifier = Modifier.height(14.dp))
 
                     Row(
@@ -460,23 +559,23 @@ fun EnhancedStoreCard(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                             if (hostel != null) {
-                                InfoItem("📍", store.formattedDistance(), responsive)
+                                InfoItem("📍", store.formattedDistanceAndTime(), responsive)
                             }
-                            InfoItem("💵", store.priceRange.label, responsive)
+                            InfoItem("💵", "₹${store.costForOne} for one", responsive)
                         }
                         Button(
                             onClick = { onNavigate(store) },
                             shape = RoundedCornerShape(12.dp),
                             colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
                             contentPadding = PaddingValues(0.dp),
-                            modifier = Modifier.height(36.dp).width(100.dp)
+                            modifier = Modifier.height(36.dp).width(90.dp)
                         ) {
                             Box(modifier = Modifier.fillMaxSize().background(BrandGradient), contentAlignment = Alignment.Center) {
                                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                                    Icon(Icons.Default.Navigation, null, tint = Color.Black, modifier = Modifier.size(17.dp))
-                                    Text("Go", color = Color.Black, fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                                    Icon(Icons.Default.Navigation, null, tint = Color.Black, modifier = Modifier.size(15.dp))
+                                    Text("Go", color = Color.Black, fontWeight = FontWeight.Bold, fontSize = 12.sp)
                                 }
                             }
                         }
@@ -515,7 +614,7 @@ private fun StoreThumbnail(store: FoodStore) {
 private fun InfoItem(emoji: String, text: String, responsive: ResponsiveInfo) {
     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
         Text(emoji, fontSize = responsive.label)
-        Text(text, color = TextSecondary, fontSize = responsive.label, fontWeight = FontWeight.Medium)
+        Text(text, color = TextSecondary.copy(alpha = 0.7f), fontSize = responsive.label, fontWeight = FontWeight.Medium)
     }
 }
 

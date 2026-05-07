@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -43,6 +44,7 @@ import com.kiit.foodfinder.viewmodel.FavoritesViewModelFactory
 import com.kiit.foodfinder.viewmodel.LocalFavoritesViewModel
 
 sealed class Screen {
+    object Loading : Screen()
     object Splash : Screen()
     object Home : Screen()
     object Favorites : Screen()
@@ -147,7 +149,15 @@ fun KIITFoodFinderApp() {
                             // Reset persistent results state for a fresh search from Home
                             vm.resetSearchState(query)
 
-                            currentScreen = Screen.Results(hostel, query)
+                            currentScreen = Screen.Loading
+                        }
+                    )
+                }
+                is Screen.Loading -> {
+                    RunningSearchScreen(
+                        hostelName = lastSearchHostel?.displayName,
+                        onFinish = {
+                            currentScreen = Screen.Results(lastSearchHostel, lastSearchQuery)
                         }
                     )
                 }
@@ -197,7 +207,7 @@ fun KIITFoodFinderApp() {
 
         // --- Premium Bottom Navigation Overlay ---
         AnimatedVisibility(
-            visible = currentScreen !is Screen.Splash && currentScreen !is Screen.StoreDetail,
+            visible = currentScreen !is Screen.Splash && currentScreen !is Screen.StoreDetail && currentScreen !is Screen.Loading,
             enter = slideInVertically { it } + fadeIn(),
             exit = slideOutVertically { it } + fadeOut(),
             modifier = Modifier.align(Alignment.BottomCenter)
@@ -221,34 +231,40 @@ fun PremiumBottomNav(
     selectedTab: Tab,
     onTabClick: (Tab) -> Unit
 ) {
-    Surface(
-        color = Surface800.copy(alpha = 0.95f),
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .navigationBarsPadding()
-            .padding(horizontal = 24.dp, vertical = 12.dp)
-            .shadow(
-                elevation = 20.dp,
-                shape = RoundedCornerShape(20.dp),
-                spotColor = BrandPrimary.copy(alpha = 0.3f)
-            )
-            .border(1.dp, Surface600, RoundedCornerShape(20.dp)),
-        shape = RoundedCornerShape(20.dp)
+            .padding(horizontal = 24.dp)
+            .padding(bottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding() + 12.dp)
     ) {
-        Row(
+        Surface(
+            color = Surface800.copy(alpha = 0.75f),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 6.dp, horizontal = 4.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Tab.values().forEach { tab ->
-                val isSelected = selectedTab == tab
-                TabItem(
-                    tab = tab,
-                    isSelected = isSelected,
-                    onClick = { onTabClick(tab) }
+                .graphicsLayer { alpha = 0.98f }
+                .shadow(
+                    elevation = 25.dp,
+                    shape = RoundedCornerShape(28.dp),
+                    spotColor = BrandPrimary.copy(alpha = 0.25f)
                 )
+                .border(1.dp, Color.White.copy(alpha = 0.12f), RoundedCornerShape(28.dp)),
+            shape = RoundedCornerShape(28.dp)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp, horizontal = 4.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Tab.values().forEach { tab ->
+                    val isSelected = selectedTab == tab
+                    TabItem(
+                        tab = tab,
+                        isSelected = isSelected,
+                        onClick = { onTabClick(tab) }
+                    )
+                }
             }
         }
     }
@@ -264,7 +280,8 @@ fun TabItem(
         modifier = Modifier
             .clip(RoundedCornerShape(12.dp))
             .clickable(onClick = onClick)
-            .padding(horizontal = 16.dp, vertical = 6.dp),
+            .padding(horizontal = 16.dp, vertical = 6.dp)
+            .graphicsLayer { alpha = if (isSelected) 1f else 0.65f },
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -272,16 +289,16 @@ fun TabItem(
             if (isSelected) {
                 Box(
                     modifier = Modifier
-                        .size(28.dp)
-                        .background(BrandPrimary.copy(alpha = 0.12f), RoundedCornerShape(8.dp))
+                        .size(30.dp)
+                        .background(BrandPrimary.copy(alpha = 0.15f), RoundedCornerShape(10.dp))
                 )
             }
             Text(
                 text = tab.icon,
                 fontSize = 20.sp,
                 modifier = Modifier.graphicsLayer(
-                    scaleX = if (isSelected) 1.1f else 1f,
-                    scaleY = if (isSelected) 1.1f else 1f
+                    scaleX = if (isSelected) 1.15f else 1f,
+                    scaleY = if (isSelected) 1.15f else 1f
                 )
             )
         }

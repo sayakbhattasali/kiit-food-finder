@@ -319,7 +319,7 @@ private fun QuickStatsRow(store: FoodStore, hostel: Hostel?, responsive: Respons
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
             .background(Surface800)
-            .border(1.dp, Surface600, RoundedCornerShape(16.dp))
+            .border(1.dp, Color.White.copy(alpha = 0.12f), RoundedCornerShape(16.dp))
             .padding(
                 vertical = if (responsive.isSmallPhone) 12.dp else 16.dp,
                 horizontal = 4.dp
@@ -346,7 +346,7 @@ private fun QuickStatsRow(store: FoodStore, hostel: Hostel?, responsive: Respons
                     )
                 }
             },
-            label = "${store.reviewCount} revs",
+            label = "Rating",
             responsive = responsive
         )
         StatDivider()
@@ -368,13 +368,13 @@ private fun QuickStatsRow(store: FoodStore, hostel: Hostel?, responsive: Respons
         StatCell(
             topContent = {
                 Text(
-                    text = store.priceRange.label,
+                    text = "₹${store.costForOne}",
                     color = TealAccent,
                     fontWeight = FontWeight.ExtraBold,
                     fontSize = responsive.h3
                 )
             },
-            label = "Price Level",
+            label = "Avg Price",
             responsive = responsive
         )
     }
@@ -393,7 +393,7 @@ private fun StatCell(topContent: @Composable () -> Unit, label: String, responsi
 
 @Composable
 private fun StatDivider() {
-    Box(modifier = Modifier.height(24.dp).width(1.dp).background(Surface600))
+    Box(modifier = Modifier.height(24.dp).width(1.dp).background(Color.White.copy(alpha = 0.1f)))
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -406,7 +406,7 @@ private fun AboutCard(store: FoodStore, responsive: ResponsiveInfo) {
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Surface800),
-        border = BorderStroke(1.dp, Surface600)
+        border = BorderStroke(1.dp, Color.White.copy(alpha = 0.12f))
     ) {
         Row(
             modifier = Modifier.fillMaxWidth().padding(responsive.cardPadding),
@@ -432,20 +432,20 @@ private fun DetailsCard(store: FoodStore, responsive: ResponsiveInfo) {
     val rows = listOf(
         DetailRow("🕐", "Hours", formatHours(store)),
         DetailRow("🏷️", "Category", "${store.category.emoji}  ${store.category.label}"),
-        DetailRow("💵", "Price Info", store.priceRange.label),
-        DetailRow("⭐", "Rating", "${String.format(Locale.getDefault(), "%.1f", store.rating)}  ·  ${store.reviewCount} reviews")
+        DetailRow("💵", "Avg Price", "₹${store.costForOne} for one"),
+        DetailRow("⭐", "Rating", String.format(Locale.getDefault(), "%.1f", store.rating))
     )
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Surface800),
-        border = BorderStroke(1.dp, Surface600)
+        border = BorderStroke(1.dp, Color.White.copy(alpha = 0.12f))
     ) {
         Column(modifier = Modifier.padding(vertical = 4.dp)) {
             rows.forEachIndexed { idx, row ->
                 DetailRowItem(row, responsive)
                 if (idx < rows.lastIndex) {
-                    HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp), color = Surface600, thickness = 0.5.dp)
+                    HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp), color = Color.White.copy(alpha = 0.08f), thickness = 0.5.dp)
                 }
             }
         }
@@ -483,7 +483,7 @@ private fun LocationCard(store: FoodStore, responsive: ResponsiveInfo) {
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Surface800),
-        border = BorderStroke(1.dp, Surface600)
+        border = BorderStroke(1.dp, Color.White.copy(alpha = 0.12f))
     ) {
         Row(
             modifier = Modifier.fillMaxWidth().padding(responsive.cardPadding),
@@ -556,7 +556,7 @@ private fun ActionsSection(
             onClick = onFavourite,
             modifier = Modifier.fillMaxWidth().height(if (responsive.isSmallPhone) 44.dp else 50.dp),
             shape = RoundedCornerShape(14.dp),
-            border = BorderStroke(1.dp, if (isFavourite) RedClosed.copy(alpha = 0.7f) else Surface600),
+            border = BorderStroke(1.dp, if (isFavourite) RedClosed.copy(alpha = 0.7f) else Color.White.copy(alpha = 0.12f)),
             colors = ButtonDefaults.outlinedButtonColors(contentColor = if (isFavourite) RedClosed else TextSecondary)
         ) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -617,7 +617,7 @@ private fun HeroIconButton(onClick: () -> Unit, responsive: ResponsiveInfo, cont
             .size(if (responsive.isSmallPhone) 36.dp else 40.dp)
             .clip(CircleShape)
             .background(Surface900.copy(alpha = 0.65f))
-            .border(1.dp, Surface600.copy(alpha = 0.7f), CircleShape)
+            .border(1.dp, Color.White.copy(alpha = 0.15f), CircleShape)
     ) { content() }
 }
 
