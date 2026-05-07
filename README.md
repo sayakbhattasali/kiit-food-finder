@@ -118,6 +118,7 @@ Save your preferred restaurants for quick access.
 <p align="center">
   <img src="./screenshots/search.jpg" width="260"/>
 </p
+  
 ---
 
 # 🛠️ Tech Stack
