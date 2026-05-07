@@ -84,7 +84,7 @@ Save your preferred restaurants for quick access.
 ## 🏠 Home Screen
 
 <p align="center">
-  <img src="./screenshots/home.jpg" width="260"/>
+  <img src="./screenshots/home.jpg" width="210"/>
 </p>
 
 ---
@@ -92,7 +92,7 @@ Save your preferred restaurants for quick access.
 ## 🍽️ Nearby Food Discovery
 
 <p align="center">
-  <img src="./screenshots/results.jpg" width="260"/>
+  <img src="./screenshots/results.jpg" width="210"/>
 </p>
 
 ---
@@ -100,7 +100,7 @@ Save your preferred restaurants for quick access.
 ## 📍 Store Details
 
 <p align="center">
-  <img src="./screenshots/details.jpg" width="260"/>
+  <img src="./screenshots/details.jpg" width="210"/>
 </p>
 
 ---
@@ -108,7 +108,7 @@ Save your preferred restaurants for quick access.
 ## ❤️ Favorites
 
 <p align="center">
-  <img src="./screenshots/favorites.jpg" width="260"/>
+  <img src="./screenshots/favorites.jpg" width="210"/>
 </p>
 
 ---
@@ -116,7 +116,7 @@ Save your preferred restaurants for quick access.
 ## 🔍 Smart Search
 
 <p align="center">
-  <img src="./screenshots/search.jpg" width="260"/>
+  <img src="./screenshots/search.jpg" width="210"/>
 </p>
 
 ---
