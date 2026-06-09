@@ -134,6 +134,3 @@ A project inspired by campus life, food culture, and the local spots that define
 
 ~ **Sayak-2328045**
 
-```
-
-```
