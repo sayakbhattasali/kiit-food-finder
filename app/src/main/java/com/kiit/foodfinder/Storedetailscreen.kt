@@ -237,13 +237,15 @@ private fun HeroSection(
         ) {
             Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 HeroChip(
-                    text  = "${store.category.emoji}  ${store.category.label}",
+                    icon  = store.category.icon,
+                    text  = store.category.label,
                     color = BrandPrimary,
                     bg    = BrandDim,
                     responsive = responsive
                 )
                 HeroChip(
-                    text  = if (isOpen) "🟢  Open" else "🔴  Closed",
+                    icon  = if (isOpen) FoodFinderIcon.Open else FoodFinderIcon.Close,
+                    text  = if (isOpen) "Open" else "Closed",
                     color = if (isOpen) GreenOpen else RedClosed,
                     bg    = if (isOpen) GreenOpen.copy(alpha = 0.12f) else RedClosed.copy(alpha = 0.12f),
                     responsive = responsive
@@ -299,9 +301,10 @@ private fun GradientHeroPlaceholder(store: FoodStore, responsive: ResponsiveInfo
                 ),
             contentAlignment = Alignment.Center
         ) {
-            Text(
-                text     = store.category.emoji,
-                fontSize = if (responsive.isSmallPhone) 48.sp else 64.sp
+            AppIcon(
+                icon = store.category.icon,
+                tint = BrandPrimary,
+                modifier = Modifier.size(if (responsive.isSmallPhone) 48.dp else 64.dp)
             )
         }
     }
@@ -333,10 +336,10 @@ private fun QuickStatsRow(store: FoodStore, hostel: Hostel?, responsive: Respons
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    Icon(
-                        Icons.Default.Star, null,
+                    AppIcon(
+                        icon = FoodFinderIcon.Rating,
                         tint = StarYellow,
-                        modifier = Modifier.size(if (responsive.isSmallPhone) 12.dp else 14.dp)
+                        modifier = Modifier.size(if (responsive.isSmallPhone) 14.dp else 16.dp)
                     )
                     Text(
                         text = String.format(Locale.getDefault(), "%.1f", store.rating),
@@ -430,10 +433,10 @@ private fun AboutCard(store: FoodStore, responsive: ResponsiveInfo) {
 @Composable
 private fun DetailsCard(store: FoodStore, responsive: ResponsiveInfo) {
     val rows = listOf(
-        DetailRow("🕐", "Hours", formatHours(store)),
-        DetailRow("🏷️", "Category", "${store.category.emoji}  ${store.category.label}"),
-        DetailRow("💵", "Avg Price", "₹${store.costForOne} for one"),
-        DetailRow("⭐", "Rating", String.format(Locale.getDefault(), "%.1f", store.rating))
+        DetailRow(FoodFinderIcon.Time, Color(0xFF2196F3), "Hours", formatHours(store)), // Blue
+        DetailRow(FoodFinderIcon.Category, Color(0xFFE91E63), "Category", store.category.label), // Pink
+        DetailRow(FoodFinderIcon.Price, Color(0xFF00C853), "Avg Price", "₹${store.costForOne} for one"), // Green
+        DetailRow(FoodFinderIcon.Rating, Color(0xFFFFD600), "Rating", String.format(Locale.getDefault(), "%.1f", store.rating)) // Yellow
     )
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -452,7 +455,7 @@ private fun DetailsCard(store: FoodStore, responsive: ResponsiveInfo) {
     }
 }
 
-private data class DetailRow(val icon: String, val label: String, val value: String)
+private data class DetailRow(val icon: FoodFinderIcon, val color: Color, val label: String, val value: String)
 
 @Composable
 private fun DetailRowItem(row: DetailRow, responsive: ResponsiveInfo) {
@@ -468,7 +471,11 @@ private fun DetailRowItem(row: DetailRow, responsive: ResponsiveInfo) {
                 .clip(RoundedCornerShape(10.dp))
                 .background(Surface700)
         ) {
-            Text(text = row.icon, fontSize = responsive.body)
+            AppIcon(
+                icon = row.icon,
+                tint = row.color,
+                modifier = Modifier.size(if (responsive.isSmallPhone) 18.dp else 20.dp)
+            )
         }
         Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(1.dp)) {
             Text(text = row.label, color = TextTertiary, fontSize = responsive.micro, fontWeight = FontWeight.Medium)
@@ -498,7 +505,11 @@ private fun LocationCard(store: FoodStore, responsive: ResponsiveInfo) {
                     .background(Brush.linearGradient(colors = listOf(BrandDim, Surface700)))
                     .border(1.dp, BrandPrimary.copy(alpha = 0.25f), RoundedCornerShape(12.dp))
             ) {
-                Text("📍", fontSize = if (responsive.isSmallPhone) 18.sp else 20.sp)
+                AppIcon(
+                    icon = FoodFinderIcon.Location,
+                    tint = Color(0xFFFF5252), // Vibrant Red for Location
+                    modifier = Modifier.size(if (responsive.isSmallPhone) 20.dp else 24.dp)
+                )
             }
             Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 Text(text = "Near KIIT University", color = TextPrimary, fontWeight = FontWeight.SemiBold, fontSize = responsive.body)
@@ -541,7 +552,7 @@ private fun ActionsSection(
                 contentAlignment = Alignment.Center
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text(text = "📍", fontSize = responsive.body)
+                    AppIcon(icon = FoodFinderIcon.Navigate, tint = Color.Black, modifier = Modifier.size(20.dp))
                     Text(
                         text = "Open in Google Maps",
                         fontWeight = FontWeight.ExtraBold,
@@ -597,15 +608,21 @@ private fun DetailSection(visible: Boolean, delayMs: Int, content: @Composable (
 }
 
 @Composable
-private fun HeroChip(text: String, color: Color, bg: Color, responsive: ResponsiveInfo) {
+private fun HeroChip(icon: FoodFinderIcon, text: String, color: Color, bg: Color, responsive: ResponsiveInfo) {
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(50.dp))
             .background(bg)
             .border(1.dp, color.copy(alpha = 0.35f), RoundedCornerShape(50.dp))
-            .padding(horizontal = if (responsive.isSmallPhone) 8.dp else 12.dp, vertical = 5.dp)
+            .padding(horizontal = if (responsive.isSmallPhone) 10.dp else 12.dp, vertical = 5.dp)
     ) {
-        Text(text = text, color = color, fontWeight = FontWeight.SemiBold, fontSize = responsive.micro)
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(6.dp)
+        ) {
+            AppIcon(icon = icon, tint = color, modifier = Modifier.size(14.dp))
+            Text(text = text, color = color, fontWeight = FontWeight.SemiBold, fontSize = responsive.micro)
+        }
     }
 }
 

@@ -80,6 +80,13 @@ fun ResultScreen(
         mutableStateOf(if (savedQuery.isNotEmpty()) savedQuery else initialSearchQuery)
     }
 
+    // NEW: Handle cases where a fresh search is triggered from outside
+    LaunchedEffect(initialSearchQuery) {
+        if (initialSearchQuery.isNotEmpty() && initialSearchQuery != searchQuery) {
+            searchQuery = initialSearchQuery
+        }
+    }
+
     val context = LocalContext.current
     val listState = externalListState
 
@@ -98,20 +105,6 @@ fun ResultScreen(
         isRestored = true
     }
 
-    // SAVE on dispose: fires exactly once when ResultScreen leaves the tree
-    // (i.e. when the user navigates to StoreDetail or presses back).
-    // This is the only reliable moment to capture the final scroll position
-    // because it runs AFTER all recompositions but BEFORE the state is gone.
-    DisposableEffect(Unit) {
-        onDispose {
-            vm.updateSearchState(
-                searchQuery,
-                selectedFilter,
-                listState.firstVisibleItemIndex,
-                listState.firstVisibleItemScrollOffset
-            )
-        }
-    }
 
     // SAVE on filter/search change: keeps metadata in sync when the user
     // changes the filter or search query (non-scroll state changes).
@@ -336,13 +329,16 @@ private fun PremiumFilterChip(
     responsive: ResponsiveInfo,
     onClick: () -> Unit
 ) {
-    val chipEmoji = when (filter) {
-        FilterOption.NEAREST    -> "📍"
-        FilterOption.BEST_RATED -> "⭐"
-        FilterOption.LATE_NIGHT -> "🌙"
-        FilterOption.OPEN_NOW   -> "🟢"
-        FilterOption.CHEAPEST   -> "💸"
+    val chipData = when (filter) {
+        FilterOption.NEAREST    -> Pair(FoodFinderIcon.Location, Color(0xFFFF5252)) // Red
+        FilterOption.BEST_RATED -> Pair(FoodFinderIcon.Rating, Color(0xFFFFD600))   // Yellow
+        FilterOption.LATE_NIGHT -> Pair(FoodFinderIcon.Night, Color(0xFF7E57C2))    // Purple
+        FilterOption.OPEN_NOW   -> Pair(FoodFinderIcon.Open, Color(0xFF00C853))     // Green
+        FilterOption.CHEAPEST   -> Pair(FoodFinderIcon.Price, Color(0xFF00BFA5))    // Teal
     }
+    val chipIcon = chipData.first
+    val chipColor = chipData.second
+
     Surface(
         onClick = onClick,
         shape = RoundedCornerShape(50.dp),
@@ -357,7 +353,11 @@ private fun PremiumFilterChip(
             modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp),
             horizontalArrangement = Arrangement.spacedBy(6.dp)
         ) {
-            Text(text = chipEmoji, fontSize = responsive.label)
+            AppIcon(
+                icon = chipIcon,
+                tint = if (isSelected) Color.Black else chipColor,
+                modifier = Modifier.size(16.dp)
+            )
             Text(
                 text = filter.label,
                 color = if (isSelected) Color.Black else TextSecondary,
@@ -453,13 +453,23 @@ fun EnhancedStoreCard(
                             color = BrandPrimary.copy(alpha = 0.9f),
                             modifier = Modifier.align(Alignment.TopStart)
                         ) {
-                            Text(
-                                text = "🏆 Best Pick",
-                                color = Color.Black,
-                                fontWeight = FontWeight.ExtraBold,
-                                fontSize = 11.sp,
-                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)
-                            )
+                            Row(
+                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(4.dp)
+                            ) {
+                                AppIcon(
+                                    icon = FoodFinderIcon.Trophy,
+                                    tint = Color(0xFFFFD600), // Gold/Yellow for Trophy
+                                    modifier = Modifier.size(12.dp)
+                                )
+                                Text(
+                                    text = "Best Pick",
+                                    color = Color.Black,
+                                    fontWeight = FontWeight.ExtraBold,
+                                    fontSize = 11.sp
+                                )
+                            }
                         }
                     }
 
@@ -521,13 +531,23 @@ fun EnhancedStoreCard(
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis
                             )
-                            Text(
-                                text = "${store.category.emoji} ${store.category.label} • ${store.speciality}",
-                                color = TextSecondary.copy(alpha = 0.7f),
-                                fontSize = responsive.label,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
-                            )
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(4.dp)
+                            ) {
+                                AppIcon(
+                                    icon = store.category.icon,
+                                    tint = TextSecondary.copy(alpha = 0.6f),
+                                    modifier = Modifier.size(14.dp)
+                                )
+                                Text(
+                                    text = "${store.category.label} • ${store.speciality}",
+                                    color = TextSecondary.copy(alpha = 0.7f),
+                                    fontSize = responsive.label,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                            }
                         }
                         Surface(
                             shape = RoundedCornerShape(10.dp),
@@ -561,9 +581,9 @@ fun EnhancedStoreCard(
                     ) {
                         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                             if (hostel != null) {
-                                InfoItem("📍", store.formattedDistanceAndTime(), responsive)
+                                InfoItem(FoodFinderIcon.Location, Color(0xFFFF5252), store.formattedDistanceAndTime(), responsive)
                             }
-                            InfoItem("💵", "₹${store.costForOne} for one", responsive)
+                            InfoItem(FoodFinderIcon.Price, Color(0xFF00C853), "₹${store.costForOne} for one", responsive)
                         }
                         Button(
                             onClick = { onNavigate(store) },
@@ -605,15 +625,19 @@ private fun StoreThumbnail(store: FoodStore) {
             modifier = Modifier.fillMaxSize().background(Brush.linearGradient(listOf(Surface700, Surface600))),
             contentAlignment = Alignment.Center
         ) {
-            Text(store.category.emoji, fontSize = 48.sp)
+            AppIcon(
+                icon = store.category.icon,
+                tint = BrandPrimary.copy(alpha = 0.4f),
+                modifier = Modifier.size(48.dp)
+            )
         }
     }
 }
 
 @Composable
-private fun InfoItem(emoji: String, text: String, responsive: ResponsiveInfo) {
+private fun InfoItem(icon: FoodFinderIcon, color: Color, text: String, responsive: ResponsiveInfo) {
     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-        Text(emoji, fontSize = responsive.label)
+        AppIcon(icon = icon, tint = color.copy(alpha = 0.8f), modifier = Modifier.size(14.dp))
         Text(text, color = TextSecondary.copy(alpha = 0.7f), fontSize = responsive.label, fontWeight = FontWeight.Medium)
     }
 }
@@ -654,7 +678,11 @@ private fun EmptyState(responsive: ResponsiveInfo) {
             modifier = Modifier.size(100.dp).clip(CircleShape).background(Surface800),
             contentAlignment = Alignment.Center
         ) {
-            Text("🔍", fontSize = 42.sp)
+            AppIcon(
+                icon = FoodFinderIcon.Empty,
+                tint = Color(0xFF8888A0),
+                modifier = Modifier.size(42.dp)
+            )
         }
         Spacer(modifier = Modifier.height(24.dp))
         Text("No results found", color = TextPrimary, fontWeight = FontWeight.ExtraBold, fontSize = responsive.h2, textAlign = TextAlign.Center)

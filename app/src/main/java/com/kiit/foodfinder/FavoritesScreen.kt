@@ -81,7 +81,7 @@ fun FavoritesScreen(
                     modifier = Modifier.size(48.dp)
                 ) {
                     Box(contentAlignment = Alignment.Center) {
-                        Text("❤️", fontSize = 20.sp)
+                        AppIcon(icon = FoodFinderIcon.Favorite, tint = Color(0xFFFF5252), modifier = Modifier.size(24.dp))
                     }
                 }
             }
@@ -137,7 +137,7 @@ private fun FavoritesEmptyState(responsive: ResponsiveInfo) {
             modifier = Modifier.size(100.dp).clip(CircleShape).background(Surface800),
             contentAlignment = Alignment.Center
         ) {
-            Text("🍱", fontSize = 42.sp)
+            AppIcon(icon = FoodFinderIcon.Empty, tint = Color(0xFFE91E63), modifier = Modifier.size(42.dp))
         }
         Spacer(modifier = Modifier.height(24.dp))
         Text(

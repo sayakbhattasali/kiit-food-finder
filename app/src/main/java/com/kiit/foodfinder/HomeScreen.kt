@@ -2,8 +2,8 @@ package com.kiit.foodfinder
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.foundation.*
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,6 +13,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,7 +35,8 @@ import com.kiit.foodfinder.ui.theme.*
 @Composable
 fun HomeScreen(
     savedHostelId: String? = null,
-    onFindFood: (Hostel?, String) -> Unit
+    onFindFood: (Hostel?, String) -> Unit,
+    onLogoClick: () -> Unit = {}
 ) {
     val responsive = rememberResponsiveInfo()
     val haptic = LocalHapticFeedback.current
@@ -125,6 +127,12 @@ fun HomeScreen(
                         .size(if (responsive.isSmallPhone) 160.dp else 190.dp)
                         .offset(y = logoOffset.dp)
                         .graphicsLayer(scaleX = logoScale, scaleY = logoScale)
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null
+                        ) {
+                            onLogoClick()
+                        }
                 )
             }
 
@@ -226,7 +234,11 @@ fun HomeScreen(
                                                 .padding(12.dp),
                                             verticalAlignment = Alignment.CenterVertically
                                         ) {
-                                            Text(text = store.category.emoji, fontSize = responsive.body)
+                                            AppIcon(
+                                                icon = store.category.icon,
+                                                tint = BrandPrimary,
+                                                modifier = Modifier.size(18.dp)
+                                            )
                                             Spacer(modifier = Modifier.width(12.dp))
                                             Text(
                                                 text = store.name,
@@ -265,7 +277,11 @@ fun HomeScreen(
                                     .clip(CircleShape)
                                     .background(BrandPrimary.copy(alpha = 0.12f))
                             ) {
-                                Text("🏠", fontSize = responsive.h3)
+                                AppIcon(
+                                    icon = FoodFinderIcon.Hostel,
+                                    tint = Color(0xFFFF9800), // Vibrant Orange for Hostel
+                                    modifier = Modifier.size(if (responsive.isSmallPhone) 18.dp else 20.dp)
+                                )
                             }
                             Spacer(modifier = Modifier.width(10.dp))
                             Text(
@@ -333,7 +349,11 @@ fun HomeScreen(
                                         DropdownMenuItem(
                                             text = {
                                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                                    Text(text = "🏘️", fontSize = responsive.body, modifier = Modifier.padding(end = 10.dp))
+                                                    AppIcon(
+                                                        icon = FoodFinderIcon.Hostel,
+                                                        tint = if (selectedHostel?.id == hostel.id) BrandPrimary else Color(0xFFFF9800).copy(alpha = 0.7f),
+                                                        modifier = Modifier.padding(end = 10.dp).size(20.dp)
+                                                    )
                                                     Text(
                                                         text = hostel.displayName,
                                                         color = if (selectedHostel?.id == hostel.id) BrandPrimary else TextPrimary,
@@ -387,12 +407,22 @@ fun HomeScreen(
                                     .background(if (selectedHostel != null) BrandGradient else Brush.linearGradient(listOf(Surface600, Surface600))),
                                 contentAlignment = Alignment.Center
                             ) {
-                                Text(
-                                    text = "🚀 Explore",
-                                    fontWeight = FontWeight.ExtraBold,
-                                    fontSize = responsive.h3,
-                                    letterSpacing = 0.5.sp
-                                )
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                ) {
+                                    AppIcon(
+                                        icon = FoodFinderIcon.Rocket,
+                                        tint = Color.Black.copy(alpha = 0.85f), // High contrast on gold/green gradient
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                    Text(
+                                        text = "Explore",
+                                        fontWeight = FontWeight.ExtraBold,
+                                        fontSize = responsive.h3,
+                                        letterSpacing = 0.5.sp
+                                    )
+                                }
                             }
                         }
                     }
@@ -410,11 +440,11 @@ fun HomeScreen(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    QuickStat(emoji = "🏪", number = "30+", label = "Food Spots", responsive = responsive)
+                    QuickStat(icon = FoodFinderIcon.Store, color = Color(0xFF00BFA5), number = "30+", label = "Food Spots", responsive = responsive) // Emerald Teal
                     StatDivider()
-                    QuickStat(emoji = "🏠", number = "35", label = "Hostels", responsive = responsive)
+                    QuickStat(icon = FoodFinderIcon.Hostel, color = Color(0xFF00BFA5), number = "35", label = "Hostels", responsive = responsive) // Emerald Teal
                     StatDivider()
-                    QuickStat(emoji = "🚶", number = "<1.5 km", label = "Avg. distance", responsive = responsive)
+                    QuickStat(icon = FoodFinderIcon.Distance, color = Color(0xFF00BFA5), number = "<1.5 km", label = "Avg. distance", responsive = responsive) // Emerald Teal
                 }
             }
 
@@ -428,9 +458,13 @@ fun HomeScreen(
 }
 
 @Composable
-private fun QuickStat(emoji: String, number: String, label: String, responsive: ResponsiveInfo) {
+private fun QuickStat(icon: FoodFinderIcon, color: Color, number: String, label: String, responsive: ResponsiveInfo) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(text = emoji, fontSize = if (responsive.isSmallPhone) 18.sp else 22.sp)
+        AppIcon(
+            icon = icon,
+            tint = color,
+            modifier = Modifier.size(if (responsive.isSmallPhone) 20.dp else 24.dp)
+        )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = number,

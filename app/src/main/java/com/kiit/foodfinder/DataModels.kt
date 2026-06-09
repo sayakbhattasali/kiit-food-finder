@@ -1,5 +1,7 @@
 package com.kiit.foodfinder
 
+import com.kiit.foodfinder.ui.theme.FoodFinderIcon
+
 // Represents a hostel location at KIIT University
 data class Hostel(
     val id: String,
@@ -9,21 +11,21 @@ data class Hostel(
 )
 
 // Category tag for each food store
-enum class FoodCategory(val label: String, val emoji: String) {
-    ROLLS("Rolls", "🌯"),
-    BURGER("Burger", "🍔"),
-    CHINESE("Chinese", "🍜"),
-    SNACKS("Snacks", "🍟"),
-    CAFE("Cafe", "☕"),
-    DESSERT("Dessert", "🍰"),
-    SOUTH_INDIAN("South Indian", "🥞"),
-    MULTI_CUISINE("Multi Cuisine", "🍽️"),
-    BIRYANI("Biryani", "🍛"),
-    PIZZA("Pizza", "🍕"),
-    MOMOS("Momos", "🥟"),
-    JUICE("Juice", "🥤"),
-    THALI("Thali", "🍱"),
-    MAGGI("Maggi", "🍜")
+enum class FoodCategory(val label: String, val icon: FoodFinderIcon) {
+    ROLLS("Rolls", FoodFinderIcon.Rolls),
+    BURGER("Burger", FoodFinderIcon.Burger),
+    CHINESE("Chinese", FoodFinderIcon.Chinese),
+    SNACKS("Snacks", FoodFinderIcon.Snacks),
+    CAFE("Cafe", FoodFinderIcon.Cafe),
+    DESSERT("Dessert", FoodFinderIcon.Dessert),
+    SOUTH_INDIAN("South Indian", FoodFinderIcon.SouthIndian),
+    MULTI_CUISINE("Multi Cuisine", FoodFinderIcon.MultiCuisine),
+    BIRYANI("Biryani", FoodFinderIcon.Biryani),
+    PIZZA("Pizza", FoodFinderIcon.Pizza),
+    MOMOS("Momos", FoodFinderIcon.Momos),
+    JUICE("Juice", FoodFinderIcon.Juice),
+    THALI("Thali", FoodFinderIcon.Thali),
+    MAGGI("Maggi", FoodFinderIcon.Maggi)
 }
 
 // Price tier indicator

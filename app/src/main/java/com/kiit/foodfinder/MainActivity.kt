@@ -6,13 +6,8 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.animation.Crossfade
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.*
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -39,6 +34,8 @@ import com.kiit.foodfinder.ui.theme.KIITFoodFinderTheme
 import com.kiit.foodfinder.ui.theme.Surface600
 import com.kiit.foodfinder.ui.theme.Surface800
 import com.kiit.foodfinder.ui.theme.TextSecondary
+import com.kiit.foodfinder.ui.theme.FoodFinderIcon
+import com.kiit.foodfinder.ui.theme.AppIcon
 import com.kiit.foodfinder.viewmodel.FavoritesViewModel
 import com.kiit.foodfinder.viewmodel.FavoritesViewModelFactory
 import com.kiit.foodfinder.viewmodel.LocalFavoritesViewModel
@@ -48,14 +45,15 @@ sealed class Screen {
     object Splash : Screen()
     object Home : Screen()
     object Favorites : Screen()
+    object About : Screen()
     data class Results(val hostel: Hostel?, val initialQuery: String = "") : Screen()
     data class StoreDetail(val store: FoodStore, val hostel: Hostel?, val fromResults: Screen) : Screen()
 }
 
-enum class Tab(val icon: String, val label: String) {
-    Home("🏠", "Home"),
-    Search("🍽️", "Restaurants"),
-    Favorites("❤️", "Saved")
+enum class Tab(val icon: FoodFinderIcon, val color: Color, val label: String) {
+    Home(FoodFinderIcon.Home, Color(0xFF00BFA5), "Home"),        // Emerald/Teal
+    Search(FoodFinderIcon.Store, Color(0xFF2196F3), "Restaurants"), // Blue
+    Favorites(FoodFinderIcon.Favorite, Color(0xFFFF5252), "Saved")  // Red
 }
 
 class MainActivity : ComponentActivity() {
@@ -114,17 +112,23 @@ fun KIITFoodFinderApp() {
     }
 
     BackHandler(enabled = currentScreen !is Screen.Home && currentScreen !is Screen.Splash) {
+        if (currentScreen is Screen.Results) {
+            lastSearchQuery = ""
+            vm.resetSearchState("")
+        }
         currentScreen = when (val s = currentScreen) {
             is Screen.StoreDetail -> s.fromResults
             is Screen.Results     -> Screen.Home
             is Screen.Favorites   -> Screen.Home
+            is Screen.About       -> Screen.Home
             else                  -> Screen.Home
         }
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
         val detailScreen = currentScreen as? Screen.StoreDetail
-        val baseScreen = detailScreen?.fromResults ?: currentScreen
+        val aboutScreen = currentScreen as? Screen.About
+        val baseScreen = detailScreen?.fromResults ?: aboutScreen ?: currentScreen
 
         Crossfade(
             targetState = baseScreen,
@@ -150,7 +154,8 @@ fun KIITFoodFinderApp() {
                             vm.resetSearchState(query)
 
                             currentScreen = Screen.Loading
-                        }
+                        },
+                        onLogoClick = { currentScreen = Screen.About }
                     )
                 }
                 is Screen.Loading -> {
@@ -173,7 +178,11 @@ fun KIITFoodFinderApp() {
                         ResultScreen(
                             hostel = screen.hostel,
                             initialSearchQuery = screen.initialQuery,
-                            onBack = { currentScreen = Screen.Home },
+                            onBack = { 
+                                lastSearchQuery = ""
+                                vm.resetSearchState("")
+                                currentScreen = Screen.Home 
+                            },
                             onStoreClick = { store ->
                                 currentScreen = Screen.StoreDetail(store, screen.hostel, screen)
                             },
@@ -181,6 +190,9 @@ fun KIITFoodFinderApp() {
                         )
                     }
 
+                }
+                is Screen.About -> {
+                    // This is now handled as an overlay for cinematic effect
                 }
                 is Screen.StoreDetail -> {
                     // This case is now handled by baseScreen logic above,
@@ -205,9 +217,19 @@ fun KIITFoodFinderApp() {
             }
         }
 
+        // Overlay for AboutScreen
+        AnimatedVisibility(
+            visible = currentScreen is Screen.About,
+            enter = fadeIn(tween(500)) + scaleIn(tween(500, easing = EaseOutCubic), initialScale = 0.92f),
+            exit = fadeOut(tween(400)) + scaleOut(tween(400, easing = EaseInCubic), targetScale = 0.92f),
+            modifier = Modifier.fillMaxSize()
+        ) {
+            AboutScreen(onBack = { currentScreen = Screen.Home })
+        }
+
         // --- Premium Bottom Navigation Overlay ---
         AnimatedVisibility(
-            visible = currentScreen !is Screen.Splash && currentScreen !is Screen.StoreDetail && currentScreen !is Screen.Loading,
+            visible = currentScreen !is Screen.Splash && currentScreen !is Screen.StoreDetail && currentScreen !is Screen.Loading && currentScreen !is Screen.About,
             enter = slideInVertically { it } + fadeIn(),
             exit = slideOutVertically { it } + fadeOut(),
             modifier = Modifier.align(Alignment.BottomCenter)
@@ -215,6 +237,10 @@ fun KIITFoodFinderApp() {
             PremiumBottomNav(
                 selectedTab = currentTab,
                 onTabClick = { tab ->
+                    if (currentScreen is Screen.Results && tab != Tab.Search) {
+                        lastSearchQuery = ""
+                        vm.resetSearchState("")
+                    }
                     currentScreen = when (tab) {
                         Tab.Home -> Screen.Home
                         Tab.Search -> Screen.Results(lastSearchHostel, lastSearchQuery)
@@ -238,16 +264,16 @@ fun PremiumBottomNav(
             .padding(bottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding() + 12.dp)
     ) {
         Surface(
-            color = Surface800.copy(alpha = 0.75f),
+            color = Surface800.copy(alpha = 0.94f),
             modifier = Modifier
                 .fillMaxWidth()
-                .graphicsLayer { alpha = 0.98f }
+                .graphicsLayer { alpha = 1f }
                 .shadow(
-                    elevation = 25.dp,
+                    elevation = 30.dp,
                     shape = RoundedCornerShape(28.dp),
-                    spotColor = BrandPrimary.copy(alpha = 0.25f)
+                    spotColor = Color.Black.copy(alpha = 0.45f)
                 )
-                .border(1.dp, Color.White.copy(alpha = 0.12f), RoundedCornerShape(28.dp)),
+                .border(1.dp, Color.White.copy(alpha = 0.18f), RoundedCornerShape(28.dp)),
             shape = RoundedCornerShape(28.dp)
         ) {
             Row(
@@ -293,13 +319,15 @@ fun TabItem(
                         .background(BrandPrimary.copy(alpha = 0.15f), RoundedCornerShape(10.dp))
                 )
             }
-            Text(
-                text = tab.icon,
-                fontSize = 20.sp,
-                modifier = Modifier.graphicsLayer(
-                    scaleX = if (isSelected) 1.15f else 1f,
-                    scaleY = if (isSelected) 1.15f else 1f
-                )
+            AppIcon(
+                icon = tab.icon,
+                tint = if (isSelected) tab.color else TextSecondary,
+                modifier = Modifier
+                    .size(22.dp)
+                    .graphicsLayer(
+                        scaleX = if (isSelected) 1.15f else 1f,
+                        scaleY = if (isSelected) 1.15f else 1f
+                    )
             )
         }
         Spacer(modifier = Modifier.height(2.dp))
