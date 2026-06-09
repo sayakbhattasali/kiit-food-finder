@@ -132,5 +132,5 @@ v2.1
 
 A project inspired by campus life, food culture, and the local spots that define our university years. Designed and engineered for the KIIT community.
 
-~ **Sayak-2328045**
+~ **Sayak Bhattasali**
 
