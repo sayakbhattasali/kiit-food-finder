@@ -1,81 +1,46 @@
 # 🍽️ KIIT Food Finder
 
-> A cinematic Android food discovery experience built for KIIT students.
-> Find nearby restaurants, cafés, desserts, late-night food spots, and student favorites around campus with a polished premium UI.
+> A cinematic, high-performance Android food discovery experience built natively for KIIT students. 
+> Find nearby restaurants, cafés, desserts, late-night spots, and campus favorites with an ultra-polished premium UI.
 
 ---
 
 ## 📲 Download APK
 
-[⬇ Download KIIT Food Finder v2.0](https://github.com/sayakbhattasali/kiit-food-finder/releases/latest)
+[⬇ Download KIIT Food Finder v2.1](https://github.com/sayakbhattasali/kiit-food-finder/releases/latest)
 
 ---
 
 # ✨ About The Project
 
-KIIT Food Finder is a modern Android application designed to help KIIT students quickly discover nearby food spots based on their hostel location.
+KIIT Food Finder is a modern, design-driven Android application engineered to help KIITians instantly locate the best food spots surrounding their specific residential hostel zones. 
 
-Built with a dark cinematic aesthetic, the app focuses on:
-
-* smooth user experience
-* intelligent food discovery
-* premium UI design
-* realistic distance & budget estimation
-* fast hostel-based recommendations
-
-This project evolved from a simple food finder into a polished student-focused experience inspired by the atmosphere of campus life.
+Built entirely with a high-end, premium dark cinematic aesthetic, the app merges granular campus data with interactive physics, smart state preservation, and immediate geospatial logic. It eliminates the friction of campus food hunting—transforming a standard utility app into an immersive digital extension of student life.
 
 ---
 
 # 🚀 Features
 
-### 🏠 Hostel-Based Discovery
+### 🏠 Hostel-Anchored Recommendation Engine
+*   **35+ Hostels Pre-Mapped:** Built-in positioning support for every major residential hostel complex at KIIT University.
+*   **Geospatial Campus Logic:** Intuitively anchors searches to your selected hostel to calculate dynamic distance metrics and realistic walking time approximations ($<1.5\text{ km}$ average campus radius).
 
-* Supports 35+ KIIT hostels
-* Personalized nearby food recommendations
-* Smart distance calculations
+### 🎬 Interactive, Next-Gen UI/UX
+*   **Cinematic About Screen:** Features an ultra-modern glassmorphic layout accessible by tapping the Home screen logo. 
+*   **3D "Coin Flip" Developer Card:** Integrated `pointerInput` matrix gestures and spring animations (`DampingRatioLowBouncy`) allow users to swipe, spin, and flip the developer card to reveal hidden layers.
+*   **Buttery Smooth Motion:** Custom entrance transitions designed with fluid `EaseOutCubic` interpolation curves alongside ambient, breathing visual indicators to guide interactions.
+*   **Trophy Recommendation Layer:** Advanced dynamic depth mapping renders a premier **"🏆 Best Pick"** high-elevation card overlay for elite restaurant discovery.
 
-### 🍔 Rich Restaurant Ecosystem
+### 🧠 Advanced Search Intelligence & Filtering
+*   **Bulletproof Filter Resets:** Upgraded structural state synchronization wipes cached query values upon leaving the Results view. Completely fixes memory-lock bugs, guaranteeing a completely fresh, unfiltered list whenever a new browsing session begins.
+*   **Persistent Scroll Restoration:** Leverages real-time `snapshotFlow` tracking to save and restore your exact `LazyColumn` list index and pixel offset when jumping back and forth from detail views.
+*   **Tactile Micro-Interactions:** Crisp, localized haptic vibration pulses (`LongPress` and `TextHandleMove`) embedded directly into filter chips and card interactions.
 
-* Fast food chains
-* Cafés
-* Dessert spots
-* Budget food joints
-* Student favorites
-* Late-night food places
-
-### 🎯 Smart Filtering
-
-* Nearest
-* Best Rated
-* Cheapest
-* Open Now
-* Late Night
-
-### 🏆 Hero Recommendation System
-
-Dynamic “Best Pick” highlighting for intelligent discovery.
-
-### 💰 Realistic Budget Sorting
-
-Uses actual estimated pricing instead of generic categories.
-
-### 📍 Walking Time Estimation
-
-Distance + walking time support for practical navigation.
-
-### ❤️ Favorites System
-
-Save your preferred restaurants for quick access.
-
-### 🎨 Cinematic UI Experience
-
-* Dark premium aesthetic
-* Glassmorphism-inspired cards
-* Smooth animations
-* Premium surface hierarchy
-* Floating navigation design
-* Dynamic loading transitions
+### 🎯 Pro-Tier Sorting Options
+*   **Nearest:** Sorted strictly by campus geospatial proximity.
+*   **Best Rated:** High-performance restaurant index filtering by real customer ratings.
+*   **Cheapest:** Driven by a concrete pricing parser ($₹\text{XX}$ for one) rather than basic categorical estimations.
+*   **Open Now / Late Night:** Real-time business hour validation filters for immediate cravings and post-midnight campus food runs.
 
 ---
 
@@ -121,56 +86,54 @@ Save your preferred restaurants for quick access.
 
 ---
 
-## 🛠️ Tech Stack
+# 🛠️ Tech Stack
 
-* Kotlin
-* Jetpack Compose
-* Android Studio
-* Material 3
-* Google Maps Intents
-* State Management
-* Modern Android UI Architecture
+*   **Language:** Kotlin
+*   **UI Framework:** Jetpack Compose (Modern Declarative Layouts)
+*   **Architecture:** MVVM (Model-View-ViewModel) with strict Clean Architecture boundaries
+*   **Data Layer:** Room DB (SQLite wrapper with Thread-safe Volatile Singleton initialization)
+*   **Asynchronous Flow:** Kotlin Coroutines & `StateFlow` reactive streams
+*   **Design Paradigm:** Material 3 Guidelines integrated with custom premium Glassmorphism implementations
+*   **Intents & Navigation:** Hardened Google Maps deep-linking with automated fallback wrappers
 
 ---
 
 # 🎨 Design Philosophy
 
-Instead of building a generic utility app, KIIT Food Finder was designed to feel immersive and cinematic — something that visually reflects the atmosphere of late-night food runs, café hopping, and campus life around KIIT.
+KIIT Food Finder breaks away from generic grid-list structures to deliver something atmospheric. It is intentionally designed to reflect the aesthetic of student culture—late-night hostel walks, cafe hopping, and social hangouts around Patia.
 
-The app focuses heavily on:
-
-* motion
-* visual depth
-* clean typography
-* premium dark aesthetics
-* emotional UI presentation
+The interface prioritizes:
+*   **Centralized Iconography:** Zero string-based emojis. The entire layout relies on a strict, centralized `FoodFinderIcon` vector mapping system for superior performance and design uniformity.
+*   **Visual Depth & Hierarchy:** Dynamic canvas radial gradients layered over a true dark palette (`Surface900`).
+*   **Responsive Scaling:** Screen viewports are optimized through programmatic responsiveness, scaling flawlessly from compact, short Android hardware to the largest flagship flagships.
 
 ---
 
-# 📦 Release
+# 📦 Releases & Versioning
 
-Current Version:
-
+### Current Version:
 ```text
-v2.0
+v2.1
+
 ```
 
-Major improvements in v2.0:
+### What's New in v2.1:
 
-* premium UI overhaul
-* expanded restaurant system
-* improved filtering
-* hostel expansion
-* hero recommendation cards
-* better visual hierarchy
-* smarter sorting system
-* enhanced animations
-* refined navigation experience
+* **Cinematic About Screen:** Fully responsive glassmorphic landscape detailing application usage.
+* **3D Coin-Flip Animation:** Immersive mechanical rotation added to the Developer Showcase.
+* **Search Engine Hardening:** Automatic screen-disposal logic added to prevent persistent empty search states.
+* **Centralized Design System:** Transitioned all elements to the unified `FoodFinderIcon` registry.
+* **Global Device Responsiveness:** Absolute font, padding, and layout fluid adaptation across all Android sizes.
+* **Build Optimization:** Upgraded Kotlin compilation parameters and cleaned internal dependency build-trees.
 
 ---
 
 # ❤️ Built For KIIT Students
 
-A small project inspired by campus life, food culture, and the little places students slowly become attached to.
+A project inspired by campus life, food culture, and the local spots that define our university years. Designed and engineered for the KIIT community.
 
----
+~ **Sayak-2328045**
+
+```
+
+```
